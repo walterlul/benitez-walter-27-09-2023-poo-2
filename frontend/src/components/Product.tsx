@@ -10,14 +10,11 @@ export const Product: React.FC<Props> = ({ products, _id, nombre, precio, cantid
   const handleDeleteProduct = () => {
     console.log('holaa')
     console.log(_id)
-    // Realiza la petición al backend para agregar el nuevo producto
     axios.delete(`http://localhost:3000/api/products/delete/${_id}`)
       .then(response => {
-        // Actualiza la lista de productos en App
         console.log(response)
         const updatedProducts = products.filter(product => product._id !== _id);
         updateProductList(updatedProducts);
-        // Limpia los campos del formulario
       })
       .catch(error => {
         console.error('Error al borrar el producto:', error);

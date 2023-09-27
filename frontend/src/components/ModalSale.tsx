@@ -39,41 +39,38 @@ export const ModalSale: React.FC<Props> = ({ sales, products, updateSaleList }) 
 
   const handleAddProduct = () => {
     if (selectedProduct && productQuantity > 0) {
-      // Buscar el producto seleccionado en la lista de productos disponibles
-      const selectedProductInfo = products.find(product => product._id === selectedProduct);
-
-      if (selectedProductInfo) {
-        // Agregar el producto con sus datos completos y la cantidad a la lista de productos de la venta
-        const productToAdd = {
-          _id: selectedProductInfo._id,
-          nombre: selectedProductInfo.nombre,
-          precio: selectedProductInfo.precio,
-          cantidad: productQuantity,
-        };
-        setNewSale({
-          ...newSale,
-          productos: [...newSale.productos, productToAdd],
-        });
-
-        // Limpiar los campos de selección y cantidad
-        setSelectedProduct('');
-        setProductQuantity(0);
+      if(products !== null){
+        const selectedProductInfo = products.find(product => product._id === selectedProduct);
+        if (selectedProductInfo) {
+          const productToAdd = {
+            _id: selectedProductInfo._id,
+            nombre: selectedProductInfo.nombre,
+            precio: selectedProductInfo.precio,
+            cantidad: productQuantity,
+          };
+          setNewSale({
+            ...newSale,
+            productos: [...newSale.productos, productToAdd],
+          });
+  
+          setSelectedProduct('');
+          setProductQuantity(0);
+        }
       }
+      
+
     }
   };
 
   const handleSaveSale = () => {
-    // Realiza la petición al backend para agregar la nueva venta
     axios
       .post<{ sale: SaleType }>('http://localhost:3000/api/sales/create', newSale)
       .then((response) => {
-        // Actualiza la lista de ventas en App
         updateSaleList([...sales, response.data.sale]);
-        // Limpia los campos del formulario y los productos
         setNewSale({
-          _id: '', // Asegúrate de tener un ID válido
+          _id: '', 
           nombre: '',
-          productos: [], // Asegúrate de tener una lista de productos válida
+          productos: [],
           fecha: '',
           saleType: '',
           precioTotal: 0,

@@ -24,12 +24,10 @@ export const ModalProduct: React.FC<Props> = ({ products, updateProductList }) =
   };
 
   const handleSaveProduct = () => {
-    // Realiza la petición al backend para agregar el nuevo producto
+
     axios.post<{ product: ProductType }>('http://localhost:3000/api/products/create', newProduct)
       .then(response => {
-        // Actualiza la lista de productos en App
         updateProductList([...products, response.data.product]);
-        // Limpia los campos del formulario
         setNewProduct({
           _id: '', 
           nombre: '',
