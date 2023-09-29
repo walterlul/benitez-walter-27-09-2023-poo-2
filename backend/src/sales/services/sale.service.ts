@@ -2,9 +2,11 @@ import { SaleModelMongo } from '../sale.model'
 import { SaleService } from '../sale.service'
 import { ResponseOkFalseSale, ResponseOkTrueSale } from '../../types/responses'
 import { Product } from '../../products/product.entity'
+import { ProductModelMongo } from '../../products/product.model'
 
 export class SaleServiceMysql implements SaleService {
   model = SaleModelMongo
+  model2 = ProductModelMongo
 
   async list (): Promise<ResponseOkFalseSale | ResponseOkTrueSale> {
     const sales = await this.model.find()
@@ -105,6 +107,12 @@ export class SaleServiceMysql implements SaleService {
     })
 
     await newSale.save()
+
+    // Disminuir la cantidad de productos en la base de datos
+    for (const producto of productos) {
+    // Actualizar la cantidad del producto en la base de datos
+      await this.model2.findByIdAndUpdate(producto._id, { $inc: { cantidad: -producto.cantidad } })
+    }
 
     return {
       ok: true,

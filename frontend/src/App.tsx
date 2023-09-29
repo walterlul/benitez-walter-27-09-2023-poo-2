@@ -68,6 +68,7 @@ const App = (): JSX.Element => {
         ) : (
           <>
             <ProductList products={products} updateProductList={updateProductList} />
+            <ModalProduct products={products} updateProductList={updateProductList} />
           </>
         )}
       </div>
@@ -81,6 +82,7 @@ const App = (): JSX.Element => {
         ) : (
           <>
             <SaleList sales={sales} updateSaleList={updateSaleList} />
+            <ModalSale products={products} updateSaleList={updateSaleList} sales={sales} />
           </>
         )}
       </div>
